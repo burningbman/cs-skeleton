@@ -1,8 +1,5 @@
-const {
-    print,
-    getProperty,
-    myLevel
-} = require('kolmafia');
+// Import all kol mafia methods
+Object.assign(globalThis, require('kolmafia'));
 
 /**
  * The main entry point for the community service script.
@@ -10,7 +7,7 @@ const {
  * this is where the code will begin executing.
  */
 function main() {
-    print('Running Community Service', 'green');
+    print('Running Community Service via cs-skeleton', 'green');
     doSetup();
     doCoilWire();
     doLeveling();
@@ -34,6 +31,34 @@ function main() {
  */
 function doSetup() {
     print('Starting setup', 'green');
+
+    // Visit toot oriole and sell pork gems
+    visitUrl("tutorial.php?action=toot");
+    use(1, Item.get(`letter from King Ralph XI`));
+    use(1, Item.get(`pork elf goodies sack`));
+    autosell(5, Item.get(`baconstone`));
+    autosell(5, Item.get(`porquoise`));
+    autosell(5, Item.get(`hamethyst`));
+
+    // Get the astral pilsners out of the astral six-pack
+    use(1, Item.get('astral six-pack'));
+
+    // Get the toy accordion for casting songs
+    if (availableAmount(Item.get('Toy accordion')) === 0) {
+        // retrieveItem returns false if we don't get the item. Abort if that's the case.
+        var gotAccordion = retrieveItem(Item.get('Toy accordion'));
+        if (!gotAccordion) {
+            abort('Failed to get toy accordion');
+        }
+    }
+
+    // Turn songboom to Total Eclipse of Your Meat
+    if (availableAmount(Item.get('SongBoom™ BoomBox'))) {
+        if (getProperty('boomBoxSong') !== 'Total Eclipse of Your Meat') {
+            cliExecute('boombox meat');
+        }
+    }
+
     print('Ending setup', 'green');
 }
 
