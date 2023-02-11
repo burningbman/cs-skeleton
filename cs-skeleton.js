@@ -32,6 +32,15 @@ function main() {
 function doSetup() {
     print('Starting setup', 'green');
 
+    tootOriole();
+    setupItems();
+    setupIotM();
+    setupPulls();
+
+    print('Ending setup', 'green');
+}
+
+function tootOriole() {
     // Visit toot oriole and sell pork gems
     visitUrl("tutorial.php?action=toot");
     use(1, Item.get(`letter from King Ralph XI`));
@@ -39,7 +48,9 @@ function doSetup() {
     autosell(5, Item.get(`baconstone`));
     autosell(5, Item.get(`porquoise`));
     autosell(5, Item.get(`hamethyst`));
+}
 
+function setupItems() {
     // Get the astral pilsners out of the astral six-pack
     use(1, Item.get('astral six-pack'));
 
@@ -51,7 +62,9 @@ function doSetup() {
             abort('Failed to get toy accordion');
         }
     }
+}
 
+function setupIotM() {
     // Turn songboom to Total Eclipse of Your Meat
     if (availableAmount(Item.get('SongBoom™ BoomBox'))) {
         if (getProperty('boomBoxSong') !== 'Total Eclipse of Your Meat') {
@@ -59,7 +72,42 @@ function doSetup() {
         }
     }
 
-    print('Ending setup', 'green');
+    // send autumn-aton to the sleazy back alley 
+    if (availableAmount(Item.get('Autumn-aton'))) {
+        cliExecute('autumnaton send sleazy back alley');
+    }
+
+    // put tiny still-suit on gelatinous cubeling (won't unequip if another fam already has it)
+    if (availableAmount(Item.get('Tiny Stillsuit')) && haveFamiliar(Familiar.get('Gelatinous Cubeling'))) {
+        equip(Item.get('Tiny Stillsuit'), Familiar.get('Gelatinous Cubeling'));
+    }
+
+    // setup saber to familiar weight
+    if (parseInt(getProperty('_saberMod')) === 0 && availableAmount(Item.get('Fourth of May Cosplay Saber'))) {
+        visitUrl('main.php?action=may4');
+        runChoice(4);
+    }
+
+    // setup model train set 
+    if (availableAmount(Item.get('Model Train Set'))) {
+        use(Item.get('Model Train Set'));
+        // Allstat -> coal -> mys -> meat -> mp -> ore -> ml -> hotres
+        visitUrl('choice.php?pwd&whichchoice=1485&option=1&slot[0]=3&slot[1]=8&slot[2]=16&slot[3]=1&slot[4]=2&slot[5]=20&slot[6]=13&slot[7]=4', true, true);
+    }
+
+    // buy a red rocket if have VIP key
+    if (availableAmount(Item.get('Clan VIP Lounge key'))) {
+        cliExecute('buy red rocket');
+    }
+}
+
+function setupPulls() {
+    // Buy, pull, and use borrowed time if not already done
+    if (getProperty('_borrowedTimeUsed') === false) {
+        buyUsingStorage(1, 20000, Item.get('borrowed time'));
+        takeStorage(1, Item.get('borrowed time'));
+        use(1, Item.get('borrowed time'));
+    }
 }
 
 /**
