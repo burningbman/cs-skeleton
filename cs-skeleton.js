@@ -88,6 +88,12 @@ function setupIotM() {
         runChoice(4);
     }
 
+    // Put the myst mumming trunk outfit on cookbook bat
+    if (haveFamiliar(Familiar.get('Cookbookbat')) && availableAmount(Item.get('mumming trunk')) && getProperty('_mummeryUses').includes('5')) {
+        useFamiliar(Familiar.get('Cookbookbat'));
+        cliExecute('mummery myst');
+    }
+
     // setup model train set 
     if (availableAmount(Item.get('Model Train Set'))) {
         use(Item.get('Model Train Set'));
@@ -96,7 +102,7 @@ function setupIotM() {
     }
 
     // buy a red rocket if have VIP key
-    if (availableAmount(Item.get('Clan VIP Lounge key'))) {
+    if (availableAmount(Item.get('Clan VIP Lounge key')) && availableAmount(Item.get('red rocket')) === 0) {
         cliExecute('buy red rocket');
     }
 }
